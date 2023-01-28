@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+import { Producto } from './../../models/producto';
+import { ProductoService } from './../../services/producto.service';
+import { Component, OnInit } from '@angular/core';
 import { initializeApp } from "firebase/app";
 import { addDoc, doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 import { collection, getDocs } from "firebase/firestore"; 
@@ -12,14 +15,19 @@ import {app} from "../../../main";
 
 
 
-export class ListarProductosComponent {
+export class ListarProductosComponent implements OnInit {
+
+  /*Cosas de firebase
   db = getFirestore(app);
   nombre="";
   users="";
+  cities=[''];
+
   async action(){
     try{const querySnapshot = await getDocs(collection(this.db, "mascotas"));
     querySnapshot.forEach((doc) => {
-      console.log(`${doc.id} => ${doc.data()}`);
+      console.log(`${doc.id} => ${doc.data()}`)
+      this.cities.push(doc.data()['nombre']);
     });} 
     catch(error){console.log(error)}
   }
@@ -72,7 +80,33 @@ async userdAdd() {
   console.log("Document written with ID: ", docRef.id);
 } catch (e: any) {
   console.error("Error adding document: ", e);
+}*/
+listProductos: Producto[] = []
+constructor(private _productoService: ProductoService, private toastr: ToastrService){}
+
+ngOnInit(): void{
+  this.obtenerProductos();
 }
 
+obtenerProductos(){
+  this._productoService.getProductos().subscribe(data=>{
+    console.log(data)
+    this.listProductos=data;
+  }, error => {
+    console.log(error)
+  })
 }
+
+eliminarProducto(id: any){
+  this._productoService.eliminarProductos(id).subscribe(data=>{
+    this.toastr.success("Correctamente eliminado","Eliminar producto");
+    this.obtenerProductos();
+  }, error => {
+    console.log(error)
+  })
+}
+
+
+}
+
 

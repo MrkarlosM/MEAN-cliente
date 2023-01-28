@@ -4,7 +4,7 @@
             <div class="card">
                 <div class="card-body text-center">
                     <span class="titulo">Listado de productos</span>
-                    <button class="btn btn-success float-end">
+                    <button class="btn btn-success float-end" routerLink="/crear-producto">
                         Nuevo
                     </button>
                     <table class="table table-striped">
@@ -18,19 +18,13 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>Coca Cola</td>
-                            <td>Colombia</td>
-                            <td>$25</td>
-                            <td><i class="fa-solid fa-pen-to-square text-info"></i> <i class="fa-solid fa-trash text-danger mx-2"></i></td>
-                          </tr>
-                          <tr>
-                            <th scope="row">2</th>
-                            <td>Hot Dog</td>
-                            <td>Bogotá</td>
-                            <td>$23</td>
-                            <td><i class="fa-solid fa-pen-to-square text-info"></i> <i class="fa-solid fa-trash text-danger mx-2"></i></td>
+                          <tr *ngFor="let item of listProductos">
+                            <th scope="row">{{listProductos.indexOf(item)+1}}</th>
+                            <td>{{item.nombre}}</td>
+                            <td>{{item.ubicacion}}</td>
+                            <td>{{item.precio}}</td>
+                            <td><i routerLink="/editar-producto/{{item._id}}" class="fa-solid fa-pen-to-square text-info"></i> 
+                              <i (click)="eliminarProducto(item._id)"class="fa-solid fa-trash text-danger mx-2"></i></td>
                           </tr>
                         </tbody>
                       </table>
@@ -40,8 +34,10 @@
     </div>
 </div>
 
-<button class="btn btn-primary" (click)="action()">Oprimeme</button>
+<!-- <button class="btn btn-primary" (click)="action()">Oprimeme</button>
 <button class="btn btn-primary" (click)="crear()">Oprimeme2</button>
 <button class="btn btn-primary" (click)="getDocCit()">Oprimeme3</button>
 <button class="btn btn-primary" (click)="userdAdd()">Oprimeme3</button>
-<h1>{{nombre}}</h1>
+<div *ngFor="let city of cities">
+<h1>{{city}}</h1>
+</div> -->
